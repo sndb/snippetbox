@@ -71,6 +71,16 @@ func (f *Form) MatchesPattern(field string, pattern *regexp.Regexp) {
 	}
 }
 
+func (f *Form) EqualFields(field, field2 string) {
+	v, v2 := f.Get(field), f.Get(field2)
+	if v == "" {
+		return
+	}
+	if v != v2 {
+		f.Errors.Add(field, "This field is invalid")
+	}
+}
+
 func (f *Form) Valid() bool {
 	return len(f.Errors) == 0
 }

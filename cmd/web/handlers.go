@@ -68,7 +68,6 @@ func (app *application) createSnippet(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.session.Put(r, "flash", "Snippet successfully created!")
-
 	http.Redirect(w, r, fmt.Sprintf("/snippet/%d", id), http.StatusSeeOther)
 }
 
@@ -107,7 +106,6 @@ func (app *application) signupUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.session.Put(r, "flash", "Your signup was successful. Please log in.")
-
 	http.Redirect(w, r, "/user/login", http.StatusSeeOther)
 }
 
@@ -135,7 +133,6 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.session.Put(r, "authenticatedUserID", id)
-
 	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
 }
 
@@ -161,4 +158,40 @@ func (app *application) userProfile(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	app.render(w, r, "profile.page.tmpl", &templateData{User: u})
+}
+
+func (app *application) changePasswordForm(w http.ResponseWriter, r *http.Request) {
+	app.render(w, r, "password.page.tmpl", &templateData{Form: forms.New(nil)})
+}
+
+func (app *application) changePassword(w http.ResponseWriter, r *http.Request) {
+	err := r.ParseForm()
+	if err != nil {
+		app.clientError(w, http.StatusBadRequest)
+		return
+	}
+
+	form := forms.New(r.PostForm)
+	form.Required("currentPassword", "newPassword", "newPasswordConfirmation")
+	form.MinLength("newPassword", 10)
+	form.EqualFields("newPasswordConfirmation", "newPassword")
+
+	if !form.Valid() {
+		app.render(w, r, "password.page.tmpl", &templateData{Form: form})
+		return
+	}
+
+	id := app.session.GetInt(r, "authenticatedUserID")
+	if err := app.users.ChangePassword(id, form.Get("currentPassword"), form.Get("newPassword")); err != nil {
+		if errors.Is(err, models.ErrInvalidCredentials) {
+			form.Errors.Add("currentPassword", "Current password is incorrect")
+			app.render(w, r, "password.page.tmpl", &templateData{Form: form})
+		} else {
+			app.serverError(w, err)
+		}
+		return
+	}
+
+	app.session.Put(r, "flash", "Your password has been successfully changed.")
+	http.Redirect(w, r, "/user/profile", http.StatusSeeOther)
 }
