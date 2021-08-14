@@ -133,7 +133,13 @@ func (app *application) loginUser(w http.ResponseWriter, r *http.Request) {
 	}
 
 	app.session.Put(r, "authenticatedUserID", id)
-	http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
+
+	path := app.session.PopString(r, "redirectPathAfterLogin")
+	if len(path) > 0 {
+		http.Redirect(w, r, path, http.StatusSeeOther)
+	} else {
+		http.Redirect(w, r, "/snippet/create", http.StatusSeeOther)
+	}
 }
 
 func (app *application) logoutUser(w http.ResponseWriter, r *http.Request) {
