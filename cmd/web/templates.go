@@ -5,8 +5,8 @@ import (
 	"path/filepath"
 	"time"
 
-	"sndb.xyz/snippetbox/pkg/forms"
-	"sndb.xyz/snippetbox/pkg/models"
+	"github.com/sndb/snippetbox/pkg/forms"
+	"github.com/sndb/snippetbox/pkg/models"
 )
 
 type templateData struct {

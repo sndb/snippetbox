@@ -3,7 +3,7 @@ package mock
 import (
 	"time"
 
-	"sndb.xyz/snippetbox/pkg/models"
+	"github.com/sndb/snippetbox/pkg/models"
 )
 
 var mockSnippet = &models.Snippet{

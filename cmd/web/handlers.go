@@ -6,8 +6,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"sndb.xyz/snippetbox/pkg/forms"
-	"sndb.xyz/snippetbox/pkg/models"
+	"github.com/sndb/snippetbox/pkg/forms"
+	"github.com/sndb/snippetbox/pkg/models"
 )
 
 func (app *application) home(w http.ResponseWriter, r *http.Request) {

@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"sndb.xyz/snippetbox/pkg/models"
+	"github.com/sndb/snippetbox/pkg/models"
 
 	"github.com/justinas/nosurf"
 )

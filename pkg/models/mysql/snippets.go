@@ -4,7 +4,7 @@ import (
 	"database/sql"
 	"errors"
 
-	"sndb.xyz/snippetbox/pkg/models"
+	"github.com/sndb/snippetbox/pkg/models"
 )
 
 type SnippetModel struct {

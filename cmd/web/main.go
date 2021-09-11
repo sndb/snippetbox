@@ -10,8 +10,8 @@ import (
 	"os"
 	"time"
 
-	"sndb.xyz/snippetbox/pkg/models"
-	"sndb.xyz/snippetbox/pkg/models/mysql"
+	"github.com/sndb/snippetbox/pkg/models"
+	"github.com/sndb/snippetbox/pkg/models/mysql"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golangcollege/sessions"
